@@ -6,7 +6,7 @@
 /*   By: ryyashir <ryyashir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 16:11:34 by ryusukeyash       #+#    #+#             */
-/*   Updated: 2024/05/14 02:47:23 by ryyashir         ###   ########.fr       */
+/*   Updated: 2024/05/14 05:07:38 by ryyashir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_read_line(int fd, char *hold)
 	if (!temp)
 		return (NULL);
 	byte_num = 1;
-	while (!ft_strchr(hold, '\n') && byte_num != 0)
+	while (/*!ft_strchr(hold, '\n') &&*/ byte_num != 0)
 	{
 		byte_num = read(fd, temp, BUFFER_SIZE);
 		if (byte_num == -1)
@@ -57,7 +57,7 @@ char	*ft_set_line(char *hold)
 
 char	*ft_next_line(char *hold)
 {
-	char	*left;
+	char	*new_hold;
 	int		i;
 
 	i = 0;
@@ -66,12 +66,12 @@ char	*ft_next_line(char *hold)
 	if (!hold[i])
 		return (NULL);
 	i++;
-	left = (char *)malloc(sizeof(char) * (ft_strlen(hold + i) + 1));
-	if (!left)
+	new_hold = (char *)malloc(sizeof(char) * (ft_strlen(hold + i) + 1));
+	if (!new_hold)
 		return (NULL);
-	ft_strlcpy(left, hold + i, ft_strlen(hold + i) + 1);
+	ft_strlcpy(new_hold, hold + i, ft_strlen(hold + i) + 1);
 	free(hold);
-	return (left);
+	return (new_hold);
 }
 
 char	*get_next_line(int fd)
@@ -82,11 +82,19 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	hold = ft_read_line(fd, hold);
+	printf("hold: %s\n", hold);
 	if (!hold)
-		return (NULL);
+    {
+        hold = NULL;
+        return(NULL);
+    }
 	output = ft_set_line(hold);
 	if (!output)
-		return (free(hold), NULL);
+	{
+        free(hold);
+        hold = NULL;
+        return (NULL);
+    }
 	hold = ft_next_line(hold);
 	return (output);
 }
@@ -103,12 +111,19 @@ int	main(void)
 	char	*line;
 
 	fd = open("./test.txt", O_RDONLY);
+
+	int i = 1;
 	while (1)
 	{
+		printf("%d 回目の呼び出し", i);
+		i++;
 		line = get_next_line(fd);
 		if (!line)
-			break ;
-		printf("%s", line);
+        {
+            printf("this is end\n");
+            break;
+        }  
+		printf("line is >>%s<<\n", line);
 		free(line);
 	}
 	close(fd);

@@ -75,10 +75,3 @@ char *ft_strjoin(char *s1 , char *s2)
     free(s1);
     return (hold);
 }
-// int main(void)
-// {
-//     char *str;
-//     str = (char)malloc(sizeof(char) * 10);
-//     printf("%s",ft_strjoin(str));
-//     return (0);
-// }

@@ -6,7 +6,7 @@
 /*   By: ryusukeyashiro <ryusukeyashiro@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 21:42:10 by ryusukeyash       #+#    #+#             */
-/*   Updated: 2024/05/12 01:55:16 by ryyashir         ###   ########.fr       */
+/*   Updated: 2024/05/13 22:29:31 by ryusukeyash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 
 #ifndef BUFFER_SIZE 
 #define BUFFER_SIZE 256

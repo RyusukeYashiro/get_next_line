@@ -1,5 +1,8 @@
 #include "get_next_line.h"
 
+// #include <stdio.h>
+// #include <string.h>
+// #include <stdlib.h>
 int ft_strlen(char *s)
 {
     int len;
@@ -50,33 +53,32 @@ size_t  ft_strlcpy(char *dst , char *src , size_t dstsize)
     return (len);
 }
 
-void ft_cat(char *hold , const char *string)
-{
-    int i;
-
-    i = 0;
-    if(!string)
-        return ;
-    while(string[i])
-    {
-        hold[i] = string[i];
-        i++;
-    }
-}
-
 char *ft_strjoin(char *s1 , char *s2)
 {
     char *hold;
     int len;
 
+    if (!s1)
+    {
+        s1 = (char *)malloc(sizeof(char));
+        s1[0] = '\0';
+    }
     if(!s2)
         return (NULL);
     len = ft_strlen(s1) + ft_strlen(s2);
     hold = (char *)malloc(sizeof(char) *(len + 1));
     if(!hold)
         return (NULL);
-    ft_cat(hold , s1);
-    ft_cat(hold + ft_strlen(s1),s2);
+    ft_strlcpy(hold, s1, ft_strlen(s1) + 1);
+    ft_strlcpy(&hold[ft_strlen(s1)], s2, ft_strlen(s2) + 1);
     hold[len] = '\0';
+    free(s1);
     return (hold);
 }
+// int main(void)
+// {
+//     char *str;
+//     str = (char)malloc(sizeof(char) * 10);
+//     printf("%s",ft_strjoin(str));
+//     return (0);
+// }

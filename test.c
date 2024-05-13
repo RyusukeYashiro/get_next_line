@@ -1,4 +1,5 @@
 #include "get_next_line.h"
+
 static char *get_line(char *str)
 {
     char *line;
@@ -15,7 +16,6 @@ static char *get_line(char *str)
     if (!line)
         return NULL;
     i = 0;
-
     while (str[i] && str[i] != '\n')
     {
         line[i] = str[i];

@@ -1,88 +1,109 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryusukeyashiro <ryusukeyashiro@student.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/10 16:11:34 by ryusukeyash       #+#    #+#             */
+/*   Updated: 2024/05/15 16:31:37 by ryusukeyash      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
-static char *get_line(char *str)
+
+char	*ft_read_line(int fd, char *hold)
 {
-    char *line;
-    int i = 0;
+	int		byte_num;
+	char	*temp;
 
-    if (!str || !*str)
-        return NULL;
-    while (str[i] && str[i] != '\n')
-        i++;
-    if (str[i] == '\n')
-        line = (char *)malloc(sizeof(char) * (i + 2));
-    else
-        line = (char *)malloc(sizeof(char) * (i + 1));
-    if (!line)
-        return NULL;
-    i = 0;
-
-    while (str[i] && str[i] != '\n')
-    {
-        line[i] = str[i];
-        i++;
-    }
-    if (str[i] == '\n')
-    {
-        line[i] = '\n';
-        i++;
-    }
-    line[i] = '\0';
-    return line;
+	temp = (char *)malloc(sizeof(char) * (BUFFER_SIZE) + 1);
+	if (!temp)
+		return (NULL);
+	byte_num = 1;
+	while (!ft_strchr(hold, '\n') && byte_num != 0)
+	{
+		byte_num = read(fd, temp, BUFFER_SIZE);
+		if (byte_num == -1)
+		{
+			free(hold);
+			free(temp);
+			return (NULL);
+		}
+		temp[byte_num] = '\0';
+		hold = ft_strjoin(hold, temp);
+	}
+	free(temp);
+	return (hold);
 }
 
-static char *update_str(char *str)
+char	*ft_set_line(char *hold)
 {
-    char *new_str;
-    int i = 0, j = 0;
+	char	*buf;
+	int		i;
 
-    while (str[i] && str[i] != '\n')
-        i++;
-    if (!str[i])
-    {
-        free(str);
-        return NULL;
-    }
-    new_str = (char *)malloc(sizeof(char) * (ft_strlen(str) - i + 1));
-    if (!new_str)
-        return NULL;
-    i++;
-    while (str[i])
-        new_str[j++] = str[i++];
-    new_str[j] = '\0';
-    free(str);
-    return new_str;
+	if (!hold || !hold[0])
+		return (NULL);
+	i = 0;
+	while (hold[i] && hold[i] != '\n')
+		i++;
+	if (hold[i] == '\n')
+		i++;
+	buf = (char *)malloc(sizeof(char) * (i + 1));
+	if (!buf)
+		return (NULL);
+	ft_strlcpy(buf, hold, i + 1);
+	return (buf);
 }
 
-char *get_next_line(int fd)
+char	*ft_next_line(char *hold)
 {
-    static char *str;
-    char buf[BUFFER_SIZE + 1];
-    char *line;
-    int bytes_read;
+	char	*new_hold;
+	int		i;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return NULL;
-    bytes_read = 1;
-    while (!ft_strchr(str, '\n') && bytes_read != 0)
-    {
-        bytes_read = read(fd, buf, BUFFER_SIZE);
-        if (bytes_read == -1)
-            return NULL;
-        buf[bytes_read] = '\0';
-        str = ft_strjoin(str, buf);
-    }
-    if (!str)
-        return NULL;
-    line = get_line(str);
-    str = update_str(str);
-    return line;
+	i = 0;
+	while (hold[i] && hold[i] != '\n')
+		i++;
+	if (!hold[i])
+	{
+		free(hold);
+		hold = NULL;
+		return (NULL);
+	}
+	i++;
+	new_hold = (char *)malloc(sizeof(char) * (ft_strlen(hold + i) + 1));
+	if (!new_hold)
+		return (NULL);
+	ft_strlcpy(new_hold, hold + i, ft_strlen(hold + i) + 1);
+	free(hold);
+	return (new_hold);
 }
 
-// __attribute__((destructor))
-// static void	a(void)
+char	*get_next_line(int fd)
+{
+	static char	*hold;
+	char		*output;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	hold = ft_read_line(fd, hold);
+	if (!hold)
+		return (NULL);
+	output = ft_set_line(hold);
+	if (!output)
+	{
+		free(hold);
+		hold = NULL;
+		return (NULL);
+	}
+	hold = ft_next_line(hold);
+	return (output);
+}
+
+// __attribute__((destructor)) static void a(void)
 // {
 // 	system("leaks -q a.out");
-// }   
+// }
 
 // int	main(void)
 // {
@@ -90,15 +111,14 @@ char *get_next_line(int fd)
 // 	char	*line;
 
 // 	fd = open("./test.txt", O_RDONLY);
-
 // 	while (1)
 // 	{
 // 		line = get_next_line(fd);
 // 		if (!line)
-//         {
-//             printf("this is end\n");
-//             break;
-//         }  
+// 		{
+// 			printf("this is end\n");
+// 			break ;
+// 		}
 // 		printf("%s", line);
 // 		free(line);
 // 	}

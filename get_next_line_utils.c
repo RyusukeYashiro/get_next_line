@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryusukeyashiro <ryusukeyashiro@student.    +#+  +:+       +#+        */
+/*   By: ryyashir <ryyashir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:19:35 by ryusukeyash       #+#    #+#             */
-/*   Updated: 2024/05/15 16:19:37 by ryusukeyash      ###   ########.fr       */
+/*   Updated: 2024/05/15 23:10:28 by ryyashir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1)
 	{
 		s1 = (char *)malloc(sizeof(char));
+		if(s1)
+			return(NULL);
 		s1[0] = '\0';
 	}
 	if (!s2)

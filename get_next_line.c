@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryusukeyashiro <ryusukeyashiro@student.    +#+  +:+       +#+        */
+/*   By: ryyashir <ryyashir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 16:11:34 by ryusukeyash       #+#    #+#             */
-/*   Updated: 2024/05/15 16:31:37 by ryusukeyash      ###   ########.fr       */
+/*   Updated: 2024/05/15 17:23:41 by ryyashir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,28 +100,30 @@ char	*get_next_line(int fd)
 	return (output);
 }
 
-// __attribute__((destructor)) static void a(void)
-// {
-// 	system("leaks -q a.out");
-// }
+__attribute__((destructor)) static void a(void)
+{
+	system("leaks -q a.out");
+}
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
+int	main(void)
+{
+	int		fd;
+	char	*line;
 
-// 	fd = open("./test.txt", O_RDONLY);
-// 	while (1)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (!line)
-// 		{
-// 			printf("this is end\n");
-// 			break ;
-// 		}
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+	fd = open("./test.txt", O_RDONLY);
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+		{
+			printf("this is end\n");
+			break ;
+		}
+		printf("%s", line);
+		printf("\n");
+		printf("Length of the line: %d\n", ft_strlen(line));
+		free(line);
+	}
+	close(fd);
+	return (0);
+}

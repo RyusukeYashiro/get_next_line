@@ -6,7 +6,7 @@
 /*   By: ryusukeyashiro <ryusukeyashiro@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 16:11:34 by ryusukeyash       #+#    #+#             */
-/*   Updated: 2024/05/15 16:31:37 by ryusukeyash      ###   ########.fr       */
+/*   Updated: 2024/05/19 16:24:37 by ryusukeyash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,11 @@ char	*ft_next_line(char *hold)
 	i++;
 	new_hold = (char *)malloc(sizeof(char) * (ft_strlen(hold + i) + 1));
 	if (!new_hold)
+	{
+		free(hold);
+		hold = NULL;
 		return (NULL);
+	}
 	ft_strlcpy(new_hold, hold + i, ft_strlen(hold + i) + 1);
 	free(hold);
 	return (new_hold);
@@ -110,7 +114,7 @@ char	*get_next_line(int fd)
 // 	int		fd;
 // 	char	*line;
 
-// 	fd = open("./test.txt", O_RDONLY);
+// 	fd = open("test.txt", O_RDONLY);
 // 	while (1)
 // 	{
 // 		line = get_next_line(fd);

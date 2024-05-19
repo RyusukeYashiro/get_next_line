@@ -6,7 +6,7 @@
 /*   By: ryusukeyashiro <ryusukeyashiro@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:19:35 by ryusukeyash       #+#    #+#             */
-/*   Updated: 2024/05/15 16:19:37 by ryusukeyash      ###   ########.fr       */
+/*   Updated: 2024/05/19 16:24:23 by ryusukeyash      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,19 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1)
 	{
 		s1 = (char *)malloc(sizeof(char));
+		if(!s1)
+			return (NULL);
 		s1[0] = '\0';
 	}
 	if (!s2)
-		return (NULL);
+		return (s1);
 	len = ft_strlen(s1) + ft_strlen(s2);
 	hold = (char *)malloc(sizeof(char) * (len + 1));
 	if (!hold)
+	{
+		free(s1);
 		return (NULL);
+	}
 	ft_strlcpy(hold, s1, ft_strlen(s1) + 1);
 	ft_strlcpy(&hold[ft_strlen(s1)], s2, ft_strlen(s2) + 1);
 	hold[len] = '\0';
